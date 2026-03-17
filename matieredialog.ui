@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MatiereDialog</class>
+ <widget class="QDialog" name="MatiereDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>530</width>
+    <height>416</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Fenêtre dialog */
+QDialog {
+    background-color: #FFFFFF;
+    font-family: Arial;
+    font-size: 14px;
+}
+
+/* Titre */
+#label_titre{
+    color: #0096C7;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Labels */
+#label_code, #label_nom, #label_volume, #label_classe {
+    color: #2D2D2D;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Champs de saisie */
+QLineEdit {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2D2D2D;
+}
+
+QLineEdit:focus {
+    border: 2px solid #0077A8;
+    background-color: #F0F9FF;
+}
+
+/* ComboBox */
+QComboBox {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2D2D2D;
+    background-color: #FFFFFF;
+}
+
+QComboBox:focus {
+    border: 2px solid #0077A8;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 30px;
+}
+
+QComboBox::down-arrow {
+    width: 12px;
+    height: 12px;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    selection-background-color: #0096C7;
+    selection-color: #FFFFFF;
+}
+
+/* Bouton enregistrer */
+#btn_enregistrer {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_enregistrer:hover {
+    background-color: #0077A8;
+}
+
+/* Bouton annuler */
+#btn_annuler {
+    background-color: #FFFFFF;
+    color: #DC3545;
+    border: 2px solid #DC3545;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+#btn_annuler:hover {
+    background-color: #DC3545;
+    color: #FFFFFF;
+}</string>
+  </property>
+  <widget class="QWidget" name="widget_content" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>531</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label_titre">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>10</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ajouter un matière</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_form" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>521</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_code">
+       <property name="text">
+        <string>*Code :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_code"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_nom">
+       <property name="text">
+        <string>*Nom :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_nom"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_volume">
+       <property name="text">
+        <string>*Volume horaire (h) :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_volume"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_classe">
+       <property name="text">
+        <string>*Classe :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_classe"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>491</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_annuler">
+       <property name="text">
+        <string>Annuler</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_enregistrer">
+       <property name="text">
+        <string>Enregistrer</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

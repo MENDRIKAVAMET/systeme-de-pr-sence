@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>660</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>660</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Système de présence - Admin</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Fenêtre principale */
+QWidget {
+    background-color: #FFFFFF;
+    font-family: Arial;
+    font-size: 14px;
+}
+
+/* Panneau menu gauche */
+#widget_menu {
+    background-color: #0077A8;
+    padding: 10px;
+}
+
+/* Titre menu */
+#label_titre_menu {
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px 10px;
+    border-bottom: 2px solid #FFFFFF;
+}
+
+/* Boutons menu */
+#btn_dashboard, #btn_etudiants, #btn_enseignants,
+#btn_matieres, #btn_seances, #btn_rapports {
+    background-color: transparent;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+#btn_dashboard:hover, #btn_etudiants:hover, #btn_enseignants:hover,
+#btn_matieres:hover, #btn_seances:hover, #btn_rapports:hover {
+    background-color: #0096C7;
+    border-radius: 5px;
+}
+
+/* Bouton déconnexion */
+#btn_deconnexion {
+    background-color: transparent;
+    color: #FFFFFF;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+#btn_deconnexion:hover {
+    background-color: #DC3545;
+    border: 2px solid #DC3545;
+}
+
+/* Zone contenu */
+#stackedWidget {
+    background-color: #F5F5F5;
+}
+
+/* Tableau de bord - titre */
+#label_bienvenue {
+    color: #0096C7;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/* Frames statistiques */
+#frame_etudiants, #frame_enseignants,
+#frame_matieres, #frame_seances {
+    background-color: #FFFFFF;
+    border: 2px solid #0096C7;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Nombres */
+#label_nb_etudiants, #label_nb_enseignants,
+#label_nb_matieres, #label_nb_seances {
+    color: #0096C7;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* Titres des frames */
+#label_titre_etudiants, #label_titre_enseignants,
+#label_titre_matieres, #label_titre_seances {
+    color: #2D2D2D;
+    font-size: 14px;
+}
+
+/* Titre de la page */
+#label_titre_etudiants , #label_titre_enseignant, #label_titre_matiere, #label_titre_seance{
+    color: #0096C7;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Bouton Ajouter */
+#btn_ajouter_etudiant, #btn_ajouter_enseignant, #btn_ajouter_matiere, #btn_ajouter_seance {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_ajouter_etudiant:hover, #btn_ajouter_enseignant:hover, #btn_ajouter_matiere:hover, #btn_ajouter_seance:hover {
+    background-color: #0077A8;
+}
+
+/* Bouton Modifier */
+#btn_modifier_etudiant, #btn_modifier_enseignant, #btn_modifier_matiere, #btn_modifier_seance{
+    background-color: #F0A500;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_modifier_etudiant:hover, #btn_modifier_enseignant:hover, #btn_modifier_matiere:hover, #btn_modifier_seance:hover {
+    background-color: #C88400;
+}
+
+/* Bouton Supprimer */
+#btn_supprimer_etudiant, #btn_supprimer_enseignant, #btn_supprimer_matiere , #btn_supprimer_seance{
+    background-color: #DC3545;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_supprimer_etudiant:hover, #btn_supprimer_enseignant:hover, #btn_supprimer_matiere:hover , #btn_supprimer_seance:hover {
+    background-color: #B02030;
+}
+
+/* Tableau */
+QTableWidget {
+    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    gridline-color: #E0E0E0;
+    font-size: 13px;
+}
+
+/* En-tête du tableau */
+QHeaderView::section {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+}
+
+/* Lignes du tableau */
+QTableWidget::item {
+    padding: 5px;
+    color: #2D2D2D;
+}
+
+/* Ligne sélectionnée */
+QTableWidget::item:selected {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+/* Lignes alternées */
+QTableWidget::item:alternate {
+    background-color: #F5F9FF;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QWidget" name="widget_menu" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>600</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label_titre_menu">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Système de Présence</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_dashboard">
+         <property name="text">
+          <string>Tableau de bord</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_etudiants">
+         <property name="text">
+          <string>Etudiants</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_enseignants">
+         <property name="text">
+          <string>Enseignants</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_matieres">
+         <property name="text">
+          <string>Matières</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_seances">
+         <property name="text">
+          <string>Séances</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_rapports">
+         <property name="text">
+          <string>Rapports</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_deconnexion">
+         <property name="text">
+          <string>Déconnexion</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="minimumSize">
+       <size>
+        <width>800</width>
+        <height>600</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>3</number>
+      </property>
+      <widget class="QWidget" name="page_enseignants">
+       <widget class="QWidget" name="widget_enseignants_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>-10</y>
+          <width>731</width>
+          <height>641</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="widget_header_enseignants" native="true">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>20</y>
+           <width>571</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_titre_enseignant">
+            <property name="text">
+             <string>Gestion des enseignants</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_ajouter_enseignant">
+            <property name="text">
+             <string>+ Ajouter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTableWidget" name="table_enseignants">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>90</y>
+           <width>691</width>
+           <height>481</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QWidget" name="widget_footer_enseignants" native="true">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>590</y>
+           <width>401</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="btn_supprimer_enseignant">
+            <property name="text">
+             <string>Supprimer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_modifier_enseignant">
+            <property name="text">
+             <string>Modifier</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_dashboard">
+       <widget class="QWidget" name="widget_dashboard_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>40</y>
+          <width>661</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="label_bienvenue">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>25</y>
+           <width>251</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bienvenue, Admin</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="widget_stats" native="true">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>100</y>
+           <width>600</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>600</width>
+           <height>100</height>
+          </size>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QFrame" name="frame_etudiants">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_titre_etudiant">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>10</y>
+               <width>66</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Etudiants</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_nb_etudiants">
+             <property name="geometry">
+              <rect>
+               <x>40</x>
+               <y>40</y>
+               <width>81</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_enseignants">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_titre_enseingants">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>10</y>
+               <width>81</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Enseignatns</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_nb_enseignants">
+             <property name="geometry">
+              <rect>
+               <x>60</x>
+               <y>40</y>
+               <width>41</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_matieres">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_titre_matieres">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>10</y>
+               <width>66</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Matières</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_nb_matieres">
+             <property name="geometry">
+              <rect>
+               <x>60</x>
+               <y>40</y>
+               <width>31</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_seances">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <widget class="QLabel" name="label_titre_seances">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>10</y>
+               <width>66</width>
+               <height>18</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Séances</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_nb_seances">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>40</y>
+               <width>41</width>
+               <height>31</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_etudiants">
+       <widget class="QWidget" name="widget_etudiants_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>711</width>
+          <height>641</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="widget_header" native="true">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>20</y>
+           <width>491</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_titre_etudiants">
+            <property name="text">
+             <string>Gestion des étudiants</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_ajouter_etudiant">
+            <property name="text">
+             <string>+ Ajouter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTableWidget" name="table_etudiants">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>691</width>
+           <height>481</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QWidget" name="widget" native="true">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>580</y>
+           <width>411</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="btn_supprimer_etudiant">
+            <property name="text">
+             <string>Supprimer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_modifier_etudiant">
+            <property name="text">
+             <string>Modifier</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_seances">
+       <widget class="QWidget" name="widget_seances_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>731</width>
+          <height>611</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="widget_header_seances" native="true">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>0</y>
+           <width>571</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_titre_seance">
+            <property name="text">
+             <string>Gestion des seances</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_ajouter_seance">
+            <property name="text">
+             <string>+ Ajouter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTableWidget" name="table_seances">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>80</y>
+           <width>731</width>
+           <height>471</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QWidget" name="widget_footer_seance" native="true">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>560</y>
+           <width>511</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QPushButton" name="btn_supprimer_seance">
+            <property name="text">
+             <string>Supprimer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_modifier_seance">
+            <property name="text">
+             <string>Modifier</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_rapports"/>
+      <widget class="QWidget" name="page_matieres">
+       <widget class="QWidget" name="widget_matieres_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>731</width>
+          <height>641</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="widget_header_matieres" native="true">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>0</y>
+           <width>551</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_titre_matiere">
+            <property name="text">
+             <string>Gestion des matières</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_ajouter_matiere">
+            <property name="text">
+             <string>+ Ajouter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QTableWidget" name="table_matieres">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>721</width>
+           <height>461</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QWidget" name="widget_footer_matieres" native="true">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>551</y>
+           <width>431</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QPushButton" name="btn_supprimer_matiere">
+            <property name="text">
+             <string>Supprimer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_modifier_matiere">
+            <property name="text">
+             <string>Modifier</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

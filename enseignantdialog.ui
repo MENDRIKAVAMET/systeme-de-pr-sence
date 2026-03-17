@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EnseignantDialog</class>
+ <widget class="QDialog" name="EnseignantDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>533</width>
+    <height>434</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Fenêtre dialog */
+QDialog {
+    background-color: #FFFFFF;
+    font-family: Arial;
+    font-size: 14px;
+}
+
+/* Titre */
+#label_titre {
+    color: #0096C7;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Labels */
+#label_nom, #label_prenoms, #label_email, #label_telephone {
+    color: #2D2D2D;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Champs de saisie */
+QLineEdit {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2D2D2D;
+}
+
+QLineEdit:focus {
+    border: 2px solid #0077A8;
+    background-color: #F0F9FF;
+}
+
+/* Bouton enregistrer */
+#btn_enregistrer {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_enregistrer:hover {
+    background-color: #0077A8;
+}
+
+/* Bouton annuler */
+#btn_annuler {
+    background-color: #FFFFFF;
+    color: #DC3545;
+    border: 2px solid #DC3545;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+#btn_annuler:hover {
+    background-color: #DC3545;
+    color: #FFFFFF;
+}</string>
+  </property>
+  <widget class="QWidget" name="widget_content" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>531</width>
+     <height>431</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label_titre">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>10</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ajouter un enseignant</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_form" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>70</y>
+      <width>531</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_nom">
+       <property name="text">
+        <string>*Nom :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_nom">
+       <property name="placeholderText">
+        <string>ex: RAKOTO</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_prenoms">
+       <property name="text">
+        <string>*Prénom(s) :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_prenoms">
+       <property name="placeholderText">
+        <string>Jean</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_email">
+       <property name="text">
+        <string>Email :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_email">
+       <property name="placeholderText">
+        <string>ex: rakotojean@gmail.com</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_telephone">
+       <property name="text">
+        <string>Téléphone :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_telephone">
+       <property name="placeholderText">
+        <string>ex: 0344444444</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>360</y>
+      <width>531</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_annuler">
+       <property name="text">
+        <string>Annuler</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_enregistrer">
+       <property name="text">
+        <string>Enregistrer</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
