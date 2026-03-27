@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EnseignantWindow</class>
+ <widget class="QMainWindow" name="EnseignantWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Fenêtre principale */
+QWidget {
+    background-color: #FFFFFF;
+    font-family: Arial;
+    font-size: 14px;
+}
+
+/* Barre titre */
+#widget_header {
+    background-color: #0096C7;
+    padding: 10px;
+}
+
+#label_nom_enseignant {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+	background-color: transparent;
+}
+
+/* Bouton déconnexion */
+#btn_deconnexion {
+    background-color: transparent;
+    color: #FFFFFF;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+#btn_deconnexion:hover {
+    background-color: #DC3545;
+    border: 2px solid #DC3545;
+}
+
+/* Titre page */
+#label_titre_seances_jour {
+    color: #0096C7;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Tableau */
+QTableWidget {
+    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    gridline-color: #E0E0E0;
+    font-size: 13px;
+}
+
+QHeaderView::section {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+}
+
+QTableWidget::item {
+    padding: 5px;
+    color: #2D2D2D;
+}
+
+QTableWidget::item:selected {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+QTableWidget::item:alternate {
+    background-color: #F5F9FF;
+}
+
+/* Bouton démarrer */
+#btn_demarrer_presence {
+    background-color: #28A745;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#btn_demarrer_presence:hover {
+    background-color: #218838;
+}
+
+/* Page séance en cours */
+#label_info_seance {
+    color: #0096C7;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#label_statut {
+    color: #2D2D2D;
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid #E0E0E0;
+    border-radius: 5px;
+}
+
+#label_nom_etudiant {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Bouton terminer */
+#btn_terminer {
+    background-color: #DC3545;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#btn_terminer:hover {
+    background-color: #B02030;
+}
+
+/* Bouton historique */
+#btn_historique {
+    background-color: #0096C7;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}
+
+#btn_historique:hover {
+    background-color: #0077A8;
+}
+
+/* Titre historique */
+#label_titre_historique {
+    color: #0096C7;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* Bouton retour */
+#btn_retour_historique {
+    background-color: transparent;
+    color: #0096C7;
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#btn_retour_historique:hover {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+/* ComboBox séances */
+#comboBox_seances_hist {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2D2D2D;
+    background-color: #FFFFFF;
+}
+
+#comboBox_seances_hist:focus {
+    border: 2px solid #0077A8;
+}
+
+#comboBox_seances_hist::drop-down {
+    border: none;
+    width: 30px;
+}
+
+#comboBox_seances_hist QAbstractItemView {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    selection-background-color: #0096C7;
+    selection-color: #FFFFFF;
+}
+
+/* Info séance */
+#label_info_hist {
+    color: #0096C7;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border: 2px solid #E0E0E0;
+    border-radius: 5px;
+    background-color: #F5F9FF;
+}
+
+/* Stats */
+#label_stats_hist {
+    color: #2D2D2D;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 10px;
+    background-color: #F5F9FF;
+    border-radius: 5px;
+    border: 2px solid #E0E0E0;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget_header" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>801</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_nom_enseignant">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>20</y>
+       <width>441</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bienvenue, [Mendrika]</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_deconnexion">
+     <property name="geometry">
+      <rect>
+       <x>550</x>
+       <y>20</y>
+       <width>141</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Déconnexion</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>79</y>
+      <width>801</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page_seances_jour">
+     <widget class="QWidget" name="widget_seances_jour_content" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>791</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="label_titre_seances_jour">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>10</y>
+         <width>151</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Mes séances du jour</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="table_seances_jour">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>60</y>
+         <width>761</width>
+         <height>391</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_demarrer_presence">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>460</y>
+         <width>191</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Démarrer la présence</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_historique">
+       <property name="geometry">
+        <rect>
+         <x>637</x>
+         <y>20</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Historique</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_historique">
+     <widget class="QWidget" name="widget_historique_content" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>801</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <widget class="QWidget" name="widget_header_list" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>801</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="label_titre_historique">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>30</y>
+          <width>291</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Historique des présences</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_retour_historique">
+        <property name="geometry">
+         <rect>
+          <x>627</x>
+          <y>25</y>
+          <width>111</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;-  Retour</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QComboBox" name="comboBox_seances_hist">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>90</y>
+         <width>291</width>
+         <height>41</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_info_hist">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>97</y>
+         <width>351</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Info de la séance séléctionnée</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="table_historique">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>771</width>
+         <height>291</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_stats_hist">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>450</y>
+         <width>191</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>X présent / Y étudiants</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_seance_cours">
+     <widget class="QWidget" name="widget_seance_cours_content" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>791</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <widget class="QLabel" name="label_info_seance">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>10</y>
+         <width>171</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Matière - Classe - Date</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_statut">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>20</y>
+         <width>181</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>En attente de scan...</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_nom_etudiant">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>70</y>
+         <width>321</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>(nom de l'étudiant scanné)</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="table_presents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>130</y>
+         <width>791</width>
+         <height>331</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_terminer">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>470</y>
+         <width>191</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Términer la présence</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

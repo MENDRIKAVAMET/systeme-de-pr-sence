@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QDate>
 #include <QTime>
+#include <QListWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -36,6 +37,8 @@ private:
     bool m_ajout;
     void chargerMatieres();
     void chargerClasses();
+    void chargerEnseignants();
+    void sauvegarderEnseignants(int idSeance);
 };
 
 #endif // SEANCEDIALOG_H

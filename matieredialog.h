@@ -5,6 +5,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+#include <QListWidgetItem>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,7 +33,9 @@ private:
     Ui::MatiereDialog *ui;
     int m_id;
     bool m_ajout;
-    void chargerClasses();  // charge les classes dans le comboBox
+    void chargerClasses();  // charge les classes dans le comboBox;
+    void chargerEnseignants();
+    void sauvegarderEnseignants(int idMatiere);
 };
 
 #endif // MATIEREDIALOG_H

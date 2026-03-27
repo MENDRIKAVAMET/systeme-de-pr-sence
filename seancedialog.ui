@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>639</width>
-    <height>500</height>
+    <height>597</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -145,6 +145,63 @@ QTimeEdit::drop-down {
 #btn_annuler:hover {
     background-color: #DC3545;
     color: #FFFFFF;
+}
+
+/* GroupBox */
+QGroupBox {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #0096C7;
+    padding: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+ 	color: #2D2D2D;
+}
+
+/* ListWidget */
+QListWidget {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    font-size: 13px;
+    color: #2D2D2D;
+}
+
+QListWidget::item {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+QListWidget::item:hover {
+    background-color: #F0F9FF;
+}
+
+QListWidget::item:selected {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+/* Case à cocher dans ListWidget */
+QListWidget::indicator {
+    width: 15px;
+    height: 15px;
+}
+
+QListWidget::indicator:unchecked {
+    border: 2px solid #0096C7;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+}
+
+QListWidget::indicator:checked {
+    border: 2px solid #0096C7;
+    border-radius: 3px;
+    background-color: #0096C7;
 }</string>
   </property>
   <widget class="QWidget" name="widget_content" native="true">
@@ -153,7 +210,7 @@ QTimeEdit::drop-down {
      <x>0</x>
      <y>0</y>
      <width>641</width>
-     <height>491</height>
+     <height>601</height>
     </rect>
    </property>
    <widget class="QLabel" name="label_titre">
@@ -174,7 +231,7 @@ QTimeEdit::drop-down {
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>641</width>
+      <width>631</width>
       <height>382</height>
      </rect>
     </property>
@@ -365,11 +422,34 @@ QTimeEdit::drop-down {
      </item>
     </layout>
    </widget>
+   <widget class="QGroupBox" name="groupBox_enseignants">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>440</y>
+      <width>611</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Enseignant(s) :</string>
+    </property>
+    <widget class="QListWidget" name="listWidget_enseignants">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>611</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>430</y>
+      <x>50</x>
+      <y>530</y>
       <width>531</width>
       <height>61</height>
      </rect>

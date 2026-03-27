@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,6 +13,7 @@ TEMPLATE = app
 
 SOURCES += \
     enseignantdialog.cpp \
+    enseignantwindow.cpp \
     etudiantdialog.cpp \
     main.cpp \
     loginwindow.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     enseignantdialog.h \
+    enseignantwindow.h \
     etudiantdialog.h \
     loginwindow.h \
     mainwindow.h \
@@ -30,6 +32,7 @@ HEADERS += \
 
 FORMS += \
     enseignantdialog.ui \
+    enseignantwindow.ui \
     etudiantdialog.ui \
     loginwindow.ui \
     mainwindow.ui \

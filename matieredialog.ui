@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>416</height>
+    <height>508</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,8 +53,8 @@ QLineEdit:focus {
 /* ComboBox */
 QComboBox {
     border: 2px solid #0096C7;
-    border-radius: 5px;
     padding: 8px;
+	 border-radius: 8px;
     font-size: 14px;
     color: #2D2D2D;
     background-color: #FFFFFF;
@@ -109,6 +109,63 @@ QComboBox QAbstractItemView {
 #btn_annuler:hover {
     background-color: #DC3545;
     color: #FFFFFF;
+}
+
+/* GroupBox */
+QGroupBox {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #0096C7;
+    padding: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+ 	color: #2D2D2D;
+}
+
+/* ListWidget */
+QListWidget {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #FFFFFF;
+    font-size: 13px;
+    color: #2D2D2D;
+}
+
+QListWidget::item {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+QListWidget::item:hover {
+    background-color: #F0F9FF;
+}
+
+QListWidget::item:selected {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+/* Case à cocher dans ListWidget */
+QListWidget::indicator {
+    width: 15px;
+    height: 15px;
+}
+
+QListWidget::indicator:unchecked {
+    border: 2px solid #0096C7;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+}
+
+QListWidget::indicator:checked {
+    border: 2px solid #0096C7;
+    border-radius: 3px;
+    background-color: #0096C7;
 }</string>
   </property>
   <widget class="QWidget" name="widget_content" native="true">
@@ -117,7 +174,7 @@ QComboBox QAbstractItemView {
      <x>0</x>
      <y>0</y>
      <width>531</width>
-     <height>411</height>
+     <height>501</height>
     </rect>
    </property>
    <widget class="QLabel" name="label_titre">
@@ -188,8 +245,8 @@ QComboBox QAbstractItemView {
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>340</y>
+      <x>20</x>
+      <y>440</y>
       <width>491</width>
       <height>61</height>
      </rect>
@@ -210,6 +267,29 @@ QComboBox QAbstractItemView {
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_enseignants">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>501</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>*Enseignant(s)</string>
+    </property>
+    <widget class="QListWidget" name="listWidget_enseignants">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>501</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

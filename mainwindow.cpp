@@ -7,6 +7,8 @@
 #include "enseignantdialog.h"
 #include "matieredialog.h"
 #include "seancedialog.h"
+#include <QBrush>
+#include <QColor>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,11 +54,6 @@ void MainWindow::on_btn_seances_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
     chargerSeances();
-}
-
-void MainWindow::on_btn_rapports_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(4);
 }
 
 void MainWindow::on_btn_deconnexion_clicked()
@@ -204,13 +201,19 @@ void MainWindow::chargerEnseignants()
     ui->table_enseignants->clearContents();
     ui->table_enseignants->setRowCount(0);
 
-    ui->table_enseignants->setColumnCount(5);
+    ui->table_enseignants->setColumnCount(6);
     ui->table_enseignants->setHorizontalHeaderLabels(
-        QStringList() << "ID" << "Nom" << "Prénoms" << "Email" << "Téléphone"
+        QStringList() << "ID" << "Nom" << "Prénoms" << "Email" << "Téléphone" << "Matières"
         );
 
     QSqlQuery query;
-    query.exec("SELECT id, nom, prenoms, email, telephone FROM enseignants ORDER BY nom, prenoms");
+    query.exec("SELECT e.id, e.nom, e.prenoms, e.email, e.telephone, "
+               "GROUP_CONCAT(m.nom SEPARATOR ', ') as matieres "
+               "FROM enseignants e "
+               "LEFT JOIN matiere_enseignant me ON e.id = me.id_enseignant "
+               "LEFT JOIN matieres m ON me.id_matiere = m.id "
+               "GROUP BY e.id "
+               "ORDER BY e.nom");
 
     int row = 0;
     while (query.next()) {
@@ -220,9 +223,11 @@ void MainWindow::chargerEnseignants()
         ui->table_enseignants->setItem(row, 2, new QTableWidgetItem(query.value("prenoms").toString()));
         ui->table_enseignants->setItem(row, 3, new QTableWidgetItem(query.value("email").toString()));
         ui->table_enseignants->setItem(row, 4, new QTableWidgetItem(query.value("telephone").toString()));
+        ui->table_enseignants->setItem(row, 5, new QTableWidgetItem(query.value("matieres").toString()));
         row++;
     }
 
+    ui->table_enseignants->hideColumn(0);
     ui->table_enseignants->horizontalHeader()->setStretchLastSection(true);
     ui->table_enseignants->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->table_enseignants->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -303,15 +308,19 @@ void MainWindow::chargerMatieres()
     ui->table_matieres->clearContents();
     ui->table_matieres->setRowCount(0);
 
-    ui->table_matieres->setColumnCount(5);
+    ui->table_matieres->setColumnCount(6);
     ui->table_matieres->setHorizontalHeaderLabels(
-        QStringList() << "ID" << "Code" << "Nom" << "Volume horaire" << "Classe"
+        QStringList() << "ID" << "Code" << "Nom" << "Volume horaire" << "Classe" << "Enseignants"
         );
 
     QSqlQuery query;
-    query.exec("SELECT m.id, m.code, m.nom, m.volume_horaire, c.nom as classe "
+    query.exec("SELECT m.id, m.code, m.nom, m.volume_horaire, c.nom as classe, "
+               "GROUP_CONCAT(e.nom, ' ', e.prenoms SEPARATOR ', ') as enseignants "
                "FROM matieres m "
                "JOIN classes c ON m.id_classe = c.id "
+               "LEFT JOIN matiere_enseignant me ON m.id = me.id_matiere "
+               "LEFT JOIN enseignants e ON me.id_enseignant = e.id "
+               "GROUP BY m.id "
                "ORDER BY m.nom");
 
     int row = 0;
@@ -322,6 +331,7 @@ void MainWindow::chargerMatieres()
         ui->table_matieres->setItem(row, 2, new QTableWidgetItem(query.value("nom").toString()));
         ui->table_matieres->setItem(row, 3, new QTableWidgetItem(query.value("volume_horaire").toString() + " h"));
         ui->table_matieres->setItem(row, 4, new QTableWidgetItem(query.value("classe").toString()));
+        ui->table_matieres->setItem(row, 5, new QTableWidgetItem(query.value("enseignants").toString()));
         row++;
     }
 
@@ -331,7 +341,6 @@ void MainWindow::chargerMatieres()
     ui->table_matieres->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->table_matieres->setAlternatingRowColors(true);
 }
-
 void MainWindow::on_btn_ajouter_matiere_clicked()
 {
     MatiereDialog dialog(this);
@@ -413,18 +422,22 @@ void MainWindow::chargerSeances()
     ui->table_seances->clearContents();
     ui->table_seances->setRowCount(0);
 
-    ui->table_seances->setColumnCount(7);
+    ui->table_seances->setColumnCount(8);
     ui->table_seances->setHorizontalHeaderLabels(
-        QStringList() << "ID" << "Matière" << "Classe" << "Date" << "Heure début" << "Heure fin" << "Validée"
+        QStringList() << "ID" << "Matière" << "Classe" << "Date"
+                      << "Heure début" << "Heure fin" << "Validée" << "Enseignants"
         );
 
     QSqlQuery query;
     query.exec("SELECT s.id, m.nom as matiere, c.nom as classe, "
                "s.date_seance, s.heure_debut, s.heure_fin, s.validee, "
-               "s.id_matiere, s.id_classe "
+               "GROUP_CONCAT(e.nom, ' ', e.prenoms SEPARATOR ', ') as enseignants "
                "FROM seances s "
                "JOIN matieres m ON s.id_matiere = m.id "
                "JOIN classes c ON s.id_classe = c.id "
+               "LEFT JOIN seance_enseignant se ON s.id = se.id_seance "
+               "LEFT JOIN enseignants e ON se.id_enseignant = e.id "
+               "GROUP BY s.id "
                "ORDER BY s.date_seance DESC");
 
     int row = 0;
@@ -437,8 +450,9 @@ void MainWindow::chargerSeances()
         ui->table_seances->setItem(row, 4, new QTableWidgetItem(query.value("heure_debut").toString()));
         ui->table_seances->setItem(row, 5, new QTableWidgetItem(query.value("heure_fin").toString()));
         ui->table_seances->setItem(row, 6, new QTableWidgetItem(
-                                               query.value("validee").toInt() == 1 ? "Oui" : "Non"
+                                               query.value("validee").toInt() == 1 ? "✓ Oui" : "✗ Non"
                                                ));
+        ui->table_seances->setItem(row, 7, new QTableWidgetItem(query.value("enseignants").toString()));
         row++;
     }
 
@@ -448,7 +462,6 @@ void MainWindow::chargerSeances()
     ui->table_seances->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->table_seances->setAlternatingRowColors(true);
 }
-
 void MainWindow::on_btn_ajouter_seance_clicked()
 {
     SeanceDialog dialog(this);
@@ -526,4 +539,336 @@ void MainWindow::on_btn_supprimer_seance_clicked()
             QMessageBox::critical(this, "Erreur", "Erreur : " + query.lastError().text());
         }
     }
+}
+
+void MainWindow::on_btn_rapports_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->page_rapports);
+    chargerRapports();
+}
+
+void MainWindow::chargerRapports()
+{
+    // Charger les combobox
+    // ComboBox séances
+    ui->comboBox_seances->clear();
+    QSqlQuery querySeances;
+    querySeances.exec("SELECT s.id, m.nom as matiere, c.nom as classe, "
+                      "s.date_seance, s.heure_debut "
+                      "FROM seances s "
+                      "JOIN matieres m ON s.id_matiere = m.id "
+                      "JOIN classes c ON s.id_classe = c.id "
+                      "ORDER BY s.date_seance DESC");
+    while (querySeances.next()) {
+        QString affichage = querySeances.value("date_seance").toString() + " - " +
+                            querySeances.value("matiere").toString() + " - " +
+                            querySeances.value("classe").toString();
+        ui->comboBox_seances->addItem(affichage, querySeances.value("id").toInt());
+    }
+
+    // ComboBox étudiants
+    ui->comboBox_etudiants->clear();
+    QSqlQuery queryEtudiants;
+    queryEtudiants.exec("SELECT id, nom, prenoms, numero_inscription "
+                        "FROM etudiants ORDER BY nom");
+    while (queryEtudiants.next()) {
+        QString affichage = queryEtudiants.value("nom").toString() + " " +
+                            queryEtudiants.value("prenoms").toString() +
+                            " (" + queryEtudiants.value("numero_inscription").toString() + ")";
+        ui->comboBox_etudiants->addItem(affichage, queryEtudiants.value("id").toInt());
+    }
+
+    // ComboBox matières
+    ui->comboBox_matieres->clear();
+    QSqlQuery queryMatieres;
+    queryMatieres.exec("SELECT id, nom, code FROM matieres ORDER BY nom");
+    while (queryMatieres.next()) {
+        QString affichage = queryMatieres.value("code").toString() + " - " +
+                            queryMatieres.value("nom").toString();
+        ui->comboBox_matieres->addItem(affichage, queryMatieres.value("id").toInt());
+    }
+
+    // Charger les rapports
+    chargerRapportParSeance();
+    chargerRapportParEtudiant();
+    chargerRapportParMatiere();
+}
+
+void MainWindow::chargerRapportParSeance()
+{
+    int idSeance = ui->comboBox_seances->currentData().toInt();
+    if (idSeance == 0) return;
+
+    // Infos de la séance
+    QSqlQuery queryInfo;
+    queryInfo.prepare("SELECT m.nom as matiere, c.nom as classe, "
+                      "s.date_seance, s.heure_debut, s.heure_fin "
+                      "FROM seances s "
+                      "JOIN matieres m ON s.id_matiere = m.id "
+                      "JOIN classes c ON s.id_classe = c.id "
+                      "WHERE s.id = :id");
+    queryInfo.bindValue(":id", idSeance);
+    queryInfo.exec();
+
+    if (queryInfo.next()) {
+        ui->label_info_seance->setText(
+            queryInfo.value("matiere").toString() + " | " +
+            queryInfo.value("classe").toString() + " | " +
+            queryInfo.value("date_seance").toString() + " | " +
+            queryInfo.value("heure_debut").toString() + " - " +
+            queryInfo.value("heure_fin").toString()
+            );
+    }
+
+    // Tableau présences
+    ui->table_rapport_seance->clearContents();
+    ui->table_rapport_seance->setRowCount(0);
+    ui->table_rapport_seance->setColumnCount(4);
+    ui->table_rapport_seance->setHorizontalHeaderLabels(
+        QStringList() << "N°" << "Nom" << "Prénoms" << "Statut"
+        );
+
+    // Tous les étudiants de la classe
+    QSqlQuery query;
+    query.prepare("SELECT e.id, e.nom, e.prenoms FROM etudiants e "
+                  "JOIN classes c ON e.id_classe = c.id "
+                  "JOIN seances s ON s.id_classe = c.id "
+                  "WHERE s.id = :idSeance "
+                  "ORDER BY e.nom");
+    query.bindValue(":idSeance", idSeance);
+    query.exec();
+
+    int row = 0;
+    int nbPresents = 0;
+    int nbAbsents = 0;
+
+    while (query.next()) {
+        int idEtudiant = query.value("id").toInt();
+
+        // Vérifier si présent
+        QSqlQuery queryPresence;
+        queryPresence.prepare("SELECT statut FROM presences "
+                              "WHERE id_seance = :idSeance "
+                              "AND id_etudiant = :idEtudiant");
+        queryPresence.bindValue(":idSeance", idSeance);
+        queryPresence.bindValue(":idEtudiant", idEtudiant);
+        queryPresence.exec();
+
+        QString statut = "Absent";
+        if (queryPresence.next()) {
+            statut = "Présent";
+            nbPresents++;
+        } else {
+            nbAbsents++;
+        }
+
+        ui->table_rapport_seance->insertRow(row);
+        ui->table_rapport_seance->setItem(row, 0, new QTableWidgetItem(QString::number(row + 1)));
+        ui->table_rapport_seance->setItem(row, 1, new QTableWidgetItem(query.value("nom").toString()));
+        ui->table_rapport_seance->setItem(row, 2, new QTableWidgetItem(query.value("prenoms").toString()));
+
+        QTableWidgetItem *itemStatut = new QTableWidgetItem(statut);
+        if (statut == "Présent") {
+            itemStatut->setForeground(QBrush(QColor("#28A745")));
+        } else {
+            itemStatut->setForeground(QBrush(QColor("#DC3545")));
+        }
+        ui->table_rapport_seance->setItem(row, 3, itemStatut);
+        row++;
+    }
+
+    ui->table_rapport_seance->horizontalHeader()->setStretchLastSection(true);
+    ui->table_rapport_seance->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->table_rapport_seance->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->table_rapport_seance->setAlternatingRowColors(true);
+
+    int total = nbPresents + nbAbsents;
+    int taux = total > 0 ? (nbPresents * 100 / total) : 0;
+    ui->label_stats_seance->setText(
+        QString("✅ %1 présents | ❌ %2 absents | 📊 Taux : %3%")
+            .arg(nbPresents).arg(nbAbsents).arg(taux)
+        );
+}
+
+void MainWindow::chargerRapportParEtudiant()
+{
+    int idEtudiant = ui->comboBox_etudiants->currentData().toInt();
+    if (idEtudiant == 0) return;
+
+    // Infos étudiant
+    QSqlQuery queryInfo;
+    queryInfo.prepare("SELECT nom, prenoms, numero_inscription FROM etudiants WHERE id = :id");
+    queryInfo.bindValue(":id", idEtudiant);
+    queryInfo.exec();
+
+    if (queryInfo.next()) {
+        ui->label_info_etudiant->setText(
+            queryInfo.value("nom").toString() + " " +
+            queryInfo.value("prenoms").toString() +
+            " | " + queryInfo.value("numero_inscription").toString()
+            );
+    }
+
+    // Tableau par matière
+    ui->table_rapport_etudiant->clearContents();
+    ui->table_rapport_etudiant->setRowCount(0);
+    ui->table_rapport_etudiant->setColumnCount(4);
+    ui->table_rapport_etudiant->setHorizontalHeaderLabels(
+        QStringList() << "Matière" << "Séances" << "Présences" << "Taux"
+        );
+
+    QSqlQuery query;
+    query.prepare("SELECT m.nom as matiere, "
+                  "COUNT(DISTINCT s.id) as total_seances, "
+                  "COUNT(DISTINCT p.id_seance) as total_presents "
+                  "FROM matieres m "
+                  "JOIN seances s ON s.id_matiere = m.id "
+                  "JOIN classes c ON s.id_classe = c.id "
+                  "JOIN etudiants e ON e.id_classe = c.id "
+                  "LEFT JOIN presences p ON p.id_seance = s.id "
+                  "AND p.id_etudiant = e.id "
+                  "WHERE e.id = :idEtudiant "
+                  "GROUP BY m.id "
+                  "ORDER BY m.nom");
+    query.bindValue(":idEtudiant", idEtudiant);
+    query.exec();
+
+    int row = 0;
+    int totalSeances = 0;
+    int totalPresents = 0;
+
+    while (query.next()) {
+        int seances = query.value("total_seances").toInt();
+        int presents = query.value("total_presents").toInt();
+        int taux = seances > 0 ? (presents * 100 / seances) : 0;
+
+        totalSeances += seances;
+        totalPresents += presents;
+
+        ui->table_rapport_etudiant->insertRow(row);
+        ui->table_rapport_etudiant->setItem(row, 0, new QTableWidgetItem(query.value("matiere").toString()));
+        ui->table_rapport_etudiant->setItem(row, 1, new QTableWidgetItem(QString::number(seances)));
+        ui->table_rapport_etudiant->setItem(row, 2, new QTableWidgetItem(QString::number(presents)));
+
+        QTableWidgetItem *itemTaux = new QTableWidgetItem(QString::number(taux) + "%");
+        if (taux >= 75) {
+            itemTaux->setForeground(QBrush(QColor("#28A745")));
+        } else if (taux >= 50) {
+            itemTaux->setForeground(QBrush(QColor("#F0A500")));
+        } else {
+            itemTaux->setForeground(QBrush(QColor("#DC3545")));
+        }
+        ui->table_rapport_etudiant->setItem(row, 3, itemTaux);
+        row++;
+    }
+
+    ui->table_rapport_etudiant->horizontalHeader()->setStretchLastSection(true);
+    ui->table_rapport_etudiant->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->table_rapport_etudiant->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->table_rapport_etudiant->setAlternatingRowColors(true);
+
+    int tauxGlobal = totalSeances > 0 ? (totalPresents * 100 / totalSeances) : 0;
+    ui->label_status_etudiant->setText(
+        QString("1 séances total | présences | Taux global : %3%")
+            .arg(totalSeances).arg(totalPresents).arg(tauxGlobal)
+        );
+}
+
+void MainWindow::chargerRapportParMatiere()
+{
+    int idMatiere = ui->comboBox_matieres->currentData().toInt();
+    if (idMatiere == 0) return;
+
+    // Infos matière
+    QSqlQuery queryInfo;
+    queryInfo.prepare("SELECT nom, code FROM matieres WHERE id = :id");
+    queryInfo.bindValue(":id", idMatiere);
+    queryInfo.exec();
+
+    if (queryInfo.next()) {
+        ui->label_info_matiere->setText(
+            queryInfo.value("code").toString() + " | " +
+            queryInfo.value("nom").toString()
+            );
+    }
+
+    // Tableau par séance
+    ui->table_rapport_matiere->clearContents();
+    ui->table_rapport_matiere->setRowCount(0);
+    ui->table_rapport_matiere->setColumnCount(4);
+    ui->table_rapport_matiere->setHorizontalHeaderLabels(
+        QStringList() << "Date" << "Total étudiants" << "Présents" << "Taux"
+        );
+
+    QSqlQuery query;
+    query.prepare("SELECT s.date_seance, s.heure_debut, "
+                  "COUNT(DISTINCT e.id) as total_etudiants, "
+                  "COUNT(DISTINCT p.id_etudiant) as total_presents "
+                  "FROM seances s "
+                  "JOIN classes c ON s.id_classe = c.id "
+                  "JOIN etudiants e ON e.id_classe = c.id "
+                  "LEFT JOIN presences p ON p.id_seance = s.id "
+                  "WHERE s.id_matiere = :idMatiere "
+                  "GROUP BY s.id "
+                  "ORDER BY s.date_seance DESC");
+    query.bindValue(":idMatiere", idMatiere);
+    query.exec();
+
+    int row = 0;
+    int totalTaux = 0;
+
+    while (query.next()) {
+        int total = query.value("total_etudiants").toInt();
+        int presents = query.value("total_presents").toInt();
+        int taux = total > 0 ? (presents * 100 / total) : 0;
+        totalTaux += taux;
+
+        QString dateAffichage = query.value("date_seance").toString() +
+                                " (" + query.value("heure_debut").toString() + ")";
+
+        ui->table_rapport_matiere->insertRow(row);
+        ui->table_rapport_matiere->setItem(row, 0, new QTableWidgetItem(dateAffichage));
+        ui->table_rapport_matiere->setItem(row, 1, new QTableWidgetItem(QString::number(total)));
+        ui->table_rapport_matiere->setItem(row, 2, new QTableWidgetItem(QString::number(presents)));
+
+        QTableWidgetItem *itemTaux = new QTableWidgetItem(QString::number(taux) + "%");
+        if (taux >= 75) {
+            itemTaux->setForeground(QBrush(QColor("#28A745")));
+        } else if (taux >= 50) {
+            itemTaux->setForeground(QBrush(QColor("#F0A500")));
+        } else {
+            itemTaux->setForeground(QBrush(QColor("#DC3545")));
+        }
+        ui->table_rapport_matiere->setItem(row, 3, itemTaux);
+        row++;
+    }
+
+    ui->table_rapport_matiere->horizontalHeader()->setStretchLastSection(true);
+    ui->table_rapport_matiere->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->table_rapport_matiere->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->table_rapport_matiere->setAlternatingRowColors(true);
+
+    int moyenneTaux = row > 0 ? (totalTaux / row) : 0;
+    ui->label_stats_matiere->setText(
+        QString("%1 séances | Taux moyen de présence : %2%")
+            .arg(row).arg(moyenneTaux)
+        );
+}
+
+void MainWindow::on_comboBox_seances_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    chargerRapportParSeance();
+}
+
+void MainWindow::on_comboBox_etudiants_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    chargerRapportParEtudiant();
+}
+
+void MainWindow::on_comboBox_matieres_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    chargerRapportParMatiere();
 }

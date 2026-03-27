@@ -195,6 +195,97 @@ QTableWidget::item:selected {
 /* Lignes alternées */
 QTableWidget::item:alternate {
     background-color: #F5F9FF;
+}
+
+/* Titre rapports */
+#label_titre_rapports {
+    color: #0096C7;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* TabWidget */
+QTabWidget::pane {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+}
+
+QTabWidget::tab-bar {
+    alignment: left;
+}
+
+QTabBar::tab {
+    background-color: #F5F9FF;
+    color: #0096C7;
+    border: 2px solid #0096C7;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+QTabBar::tab:selected {
+    background-color: #0096C7;
+    color: #FFFFFF;
+}
+
+QTabBar::tab:hover {
+    background-color: #0077A8;
+    color: #FFFFFF;
+}
+
+/* ComboBox rapports */
+#comboBox_seances, #comboBox_etudiants, #comboBox_matieres {
+    border: 2px solid #0096C7;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 14px;
+    color: #2D2D2D;
+    background-color: #FFFFFF;
+}
+
+#comboBox_seances:focus, #comboBox_etudiants:focus, #comboBox_matieres:focus {
+    border: 2px solid #0077A8;
+}
+
+#comboBox_seances::drop-down, #comboBox_etudiants::drop-down, #comboBox_matieres::drop-down {
+    border: none;
+    width: 30px;
+}
+
+#comboBox_seances QAbstractItemView,
+#comboBox_etudiants QAbstractItemView,
+#comboBox_matieres QAbstractItemView {
+    border: 2px solid #0096C7;
+    background-color: #FFFFFF;
+    selection-background-color: #0096C7;
+    selection-color: #FFFFFF;
+}
+
+/* Labels info */
+#label_info_seance, #label_info_etudiant, #label_info_matiere {
+    color: #0096C7;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 10px;
+    border: 2px solid #E0E0E0;
+    border-radius: 5px;
+    background-color: #F5F9FF;
+}
+
+/* Labels stats */
+#label_stats_seance, #label_stats_etudiant, #label_stats_matiere {
+    color: #2D2D2D;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 10px;
+    background-color: #F5F9FF;
+    border-radius: 5px;
+    border: 2px solid #E0E0E0;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -288,7 +379,7 @@ QTableWidget::item:alternate {
        </size>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_enseignants">
        <widget class="QWidget" name="widget_enseignants_content" native="true">
@@ -699,7 +790,197 @@ QTableWidget::item:alternate {
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_rapports"/>
+      <widget class="QWidget" name="page_rapports">
+       <widget class="QWidget" name="widget_rapports_content" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>751</width>
+          <height>641</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="label_titre_rapports">
+         <property name="geometry">
+          <rect>
+           <x>290</x>
+           <y>10</y>
+           <width>241</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Rapports de présence</string>
+         </property>
+        </widget>
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>60</y>
+           <width>761</width>
+           <height>591</height>
+          </rect>
+         </property>
+         <property name="currentIndex">
+          <number>2</number>
+         </property>
+         <widget class="QWidget" name="tab_par_seance">
+          <attribute name="title">
+           <string>Par séance</string>
+          </attribute>
+          <widget class="QComboBox" name="comboBox_seances">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>341</width>
+             <height>26</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_info_seance">
+           <property name="geometry">
+            <rect>
+             <x>370</x>
+             <y>10</y>
+             <width>361</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+          <widget class="QTableWidget" name="table_rapport_seance">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>61</y>
+             <width>731</width>
+             <height>461</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_stats_seance">
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>540</y>
+             <width>191</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>X présents / Y étudiants</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_par_etudiant">
+          <attribute name="title">
+           <string>Par étudiant</string>
+          </attribute>
+          <widget class="QComboBox" name="comboBox_etudiants">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>10</y>
+             <width>281</width>
+             <height>26</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QTableWidget" name="table_rapport_etudiant">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>40</y>
+             <width>741</width>
+             <height>491</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_status_etudiant">
+           <property name="geometry">
+            <rect>
+             <x>300</x>
+             <y>550</y>
+             <width>161</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Taux de présence global</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_info_etudiant">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>10</y>
+             <width>291</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_par_matiere">
+          <attribute name="title">
+           <string>Par matière</string>
+          </attribute>
+          <widget class="QComboBox" name="comboBox_matieres">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>10</y>
+             <width>361</width>
+             <height>31</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QTableWidget" name="table_rapport_matiere">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>50</y>
+             <width>741</width>
+             <height>431</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_stats_matiere">
+           <property name="geometry">
+            <rect>
+             <x>300</x>
+             <y>490</y>
+             <width>151</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Moyenne générale</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_info_matiere">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>10</y>
+             <width>251</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
       <widget class="QWidget" name="page_matieres">
        <widget class="QWidget" name="widget_matieres_content" native="true">
         <property name="geometry">

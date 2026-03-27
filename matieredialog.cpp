@@ -9,6 +9,7 @@ MatiereDialog::MatiereDialog(QWidget *parent)
     m_id = -1;
     m_ajout = true;
     chargerClasses();
+    chargerEnseignants();
 }
 
 MatiereDialog::~MatiereDialog()
@@ -42,6 +43,10 @@ void MatiereDialog::setModeAjout()
     // Code modifiable en mode ajout
     ui->lineEdit_code->setReadOnly(false);
     ui->lineEdit_code->setStyleSheet("");
+
+    for(int i=0; i<ui->listWidget_enseignants->count(); i++){
+        ui->listWidget_enseignants->item(i)->setCheckState(Qt::Unchecked);
+    }
 }
 
 void MatiereDialog::setModeModification(int id, QString code, QString nom, int volumeHoraire, int idClasse)
@@ -62,6 +67,26 @@ void MatiereDialog::setModeModification(int id, QString code, QString nom, int v
         if (ui->comboBox_classe->itemData(i).toInt() == idClasse) {
             ui->comboBox_classe->setCurrentIndex(i);
             break;
+        }
+    }
+    // Cocher les enseignants déjà assignés
+    QSqlQuery query;
+    query.prepare("SELECT id_enseignant FROM matiere_enseignant WHERE id_matiere = :id");
+    query.bindValue(":id", m_id);
+    query.exec();
+
+    QList<int> enseignantsAssignes;
+    while (query.next()) {
+        enseignantsAssignes.append(query.value("id_enseignant").toInt());
+    }
+
+    for (int i = 0; i < ui->listWidget_enseignants->count(); i++) {
+        QListWidgetItem *item = ui->listWidget_enseignants->item(i);
+        int idEnseignant = item->data(Qt::UserRole).toInt();
+        if (enseignantsAssignes.contains(idEnseignant)) {
+            item->setCheckState(Qt::Checked);
+        } else {
+            item->setCheckState(Qt::Unchecked);
         }
     }
 }
@@ -101,11 +126,52 @@ void MatiereDialog::on_btn_enregistrer_clicked()
     query.bindValue(":idClasse", idClasse);
 
     if (query.exec()) {
+        int idMatiere = m_ajout ? query.lastInsertId().toInt() : m_id;
+        sauvegarderEnseignants(idMatiere);// ajoute cette ligne
         QMessageBox::information(this, "Succès",
                                  m_ajout ? "Matière ajoutée avec succès !" : "Matière modifiée avec succès !");
         accept();
     } else {
         QMessageBox::critical(this, "Erreur", "Erreur : " + query.lastError().text());
+    }
+}
+
+void MatiereDialog::chargerEnseignants()
+{
+    ui->listWidget_enseignants->clear();
+    QSqlQuery query;
+    query.exec("SELECT id, nom, prenoms FROM enseignants ORDER BY nom");
+    while (query.next()) {
+        QString affichage = query.value("nom").toString() + " " + query.value("prenoms").toString();
+        QListWidgetItem *item = new QListWidgetItem(affichage);
+        // stocker l'id de l'enseignant dans l'item (caché)
+        item->setData(Qt::UserRole, query.value("id").toInt());
+        // case à cocher non cochée par défaut
+        item->setCheckState(Qt::Unchecked);
+        ui->listWidget_enseignants->addItem(item);
+    }
+}
+
+void MatiereDialog::sauvegarderEnseignants(int idMatiere)
+{
+    // Supprimer les anciennes liaisons
+    QSqlQuery queryDelete;
+    queryDelete.prepare("DELETE FROM matiere_enseignant WHERE id_matiere = :id");
+    queryDelete.bindValue(":id", idMatiere);
+    queryDelete.exec();
+
+    // Insérer les enseignants cochés
+    for (int i = 0; i < ui->listWidget_enseignants->count(); i++) {
+        QListWidgetItem *item = ui->listWidget_enseignants->item(i);
+        if (item->checkState() == Qt::Checked) {
+            int idEnseignant = item->data(Qt::UserRole).toInt();
+            QSqlQuery queryInsert;
+            queryInsert.prepare("INSERT INTO matiere_enseignant (id_matiere, id_enseignant) "
+                                "VALUES (:idMatiere, :idEnseignant)");
+            queryInsert.bindValue(":idMatiere", idMatiere);
+            queryInsert.bindValue(":idEnseignant", idEnseignant);
+            queryInsert.exec();
+        }
     }
 }
 

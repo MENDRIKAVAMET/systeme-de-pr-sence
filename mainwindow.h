@@ -39,6 +39,9 @@ private slots:
     void on_btn_ajouter_seance_clicked();
     void on_btn_modifier_seance_clicked();
     void on_btn_supprimer_seance_clicked();
+    void on_comboBox_seances_currentIndexChanged(int index);
+    void on_comboBox_etudiants_currentIndexChanged(int index);
+    void on_comboBox_matieres_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -47,6 +50,10 @@ private:
     void chargerEnseignants();
     void chargerMatieres();
     void chargerSeances();
+    void chargerRapports();
+    void chargerRapportParSeance();
+    void chargerRapportParEtudiant();
+    void chargerRapportParMatiere();
 
 };
 
