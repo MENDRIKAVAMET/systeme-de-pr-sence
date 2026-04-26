@@ -22,15 +22,16 @@
   <property name="styleSheet">
    <string notr="true">/* Fenêtre principale */
 QWidget {
-    background-color: #FFFFFF;
-    font-family: Arial;
+    background-color: #F4F6F9;
+    font-family: &quot;Segoe UI&quot;;
     font-size: 14px;
+    color: #2D2D2D;
 }
 
 /* Panneau menu gauche */
 #widget_menu {
-    background-color: #0077A8;
-    padding: 10px;
+    background-color: #1E293B;
+    padding: 15px;
 }
 
 /* Titre menu */
@@ -46,17 +47,18 @@ QWidget {
 #btn_dashboard, #btn_etudiants, #btn_enseignants,
 #btn_matieres, #btn_seances, #btn_rapports {
     background-color: transparent;
-    color: #FFFFFF;
+    color: #CBD5E1;
     border: none;
-    padding: 12px 10px;
+    padding: 12px 15px;
     text-align: left;
     font-size: 14px;
+    border-radius: 8px;
 }
 
 #btn_dashboard:hover, #btn_etudiants:hover, #btn_enseignants:hover,
 #btn_matieres:hover, #btn_seances:hover, #btn_rapports:hover {
-    background-color: #0096C7;
-    border-radius: 5px;
+    background-color: #334155;
+    color: #FFFFFF;
 }
 
 /* Bouton déconnexion */
@@ -91,10 +93,10 @@ QWidget {
 #frame_etudiants, #frame_enseignants,
 #frame_matieres, #frame_seances {
     background-color: #FFFFFF;
-    border: 2px solid #0096C7;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 15px;
     margin: 10px;
+    border: none;
 }
 
 /* Nombres */
@@ -164,20 +166,28 @@ QWidget {
 
 /* Tableau */
 QTableWidget {
-    border: 1px solid #E0E0E0;
+    border: none;
     background-color: #FFFFFF;
-    gridline-color: #E0E0E0;
+    gridline-color: #E5E7EB;
     font-size: 13px;
+    border-radius: 8px;
 }
 
 /* En-tête du tableau */
 QHeaderView::section {
-    background-color: #0096C7;
+    background-color: #1E293B;
     color: #FFFFFF;
-    padding: 8px;
-    font-size: 13px;
+    padding: 10px;
     font-weight: bold;
     border: none;
+}
+
+QPushButton {
+    border-radius: 8px;
+}
+
+QPushButton:pressed {
+    background-color: #1D4ED8;
 }
 
 /* Lignes du tableau */
@@ -236,6 +246,18 @@ QTabBar::tab:selected {
 QTabBar::tab:hover {
     background-color: #0077A8;
     color: #FFFFFF;
+}
+
+
+QScrollBar:vertical {
+    border: none;
+    background: #F1F1F1;
+    width: 8px;
+}
+
+QScrollBar::handle:vertical {
+    background: #0096C7;
+    border-radius: 4px;
 }
 
 /* ComboBox rapports */
@@ -379,7 +401,7 @@ QTabBar::tab:hover {
        </size>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_enseignants">
        <widget class="QWidget" name="widget_enseignants_content" native="true">

@@ -481,9 +481,9 @@ QTableWidget::item:alternate {
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>130</y>
+         <y>190</y>
          <width>791</width>
-         <height>331</height>
+         <height>271</height>
         </rect>
        </property>
       </widget>
@@ -499,6 +499,42 @@ QTableWidget::item:alternate {
        <property name="text">
         <string>Términer la présence</string>
        </property>
+      </widget>
+      <widget class="QWidget" name="widget_leds" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>100</y>
+         <width>181</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="label_led_verte">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>20</y>
+          <width>31</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_led_rouge">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>41</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
