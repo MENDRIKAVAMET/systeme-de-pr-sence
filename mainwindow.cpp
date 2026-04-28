@@ -9,6 +9,8 @@
 #include "seancedialog.h"
 #include <QBrush>
 #include <QColor>
+#include <QtCharts>
+using namespace QtCharts;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -97,6 +99,22 @@ void MainWindow::chargerDashboard()
     {
         ui->label_nb_seances->setText(query.value(0).toString());
     }
+
+    // Nombre de présents
+    query.exec("SELECT COUNT(*) FROM presences WHERE statut='present'");
+    query.next();
+    int presents = query.value(0).toInt();
+
+    // Nombre total d’étudiants
+    query.exec("SELECT COUNT(*) FROM etudiants");
+    query.next();
+    int total = query.value(0).toInt();
+
+    int absents = total - presents;
+
+    // Afficher le graphique réel
+    afficherGraphiquePresence(presents, absents);
+    afficherCourbePresence();
 }
 
 void MainWindow::chargerEtudiants()
@@ -124,6 +142,8 @@ void MainWindow::chargerEtudiants()
     ui->table_etudiants->horizontalHeader()->setStretchLastSection(true);
     ui->table_etudiants->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->table_etudiants->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    afficherCourbePresence();
 }
 
 void MainWindow::on_btn_supprimer_etudiant_clicked()
@@ -871,4 +891,89 @@ void MainWindow::on_comboBox_matieres_currentIndexChanged(int index)
 {
     Q_UNUSED(index);
     chargerRapportParMatiere();
+}
+
+void MainWindow::on_btn_actualiser_clicked()
+{
+    ui->btn_actualiser->setText("Actualisation...");
+    ui->btn_actualiser->setEnabled(false);
+
+    chargerDashboard();
+
+    ui->btn_actualiser->setText("Actualiser");
+    ui->btn_actualiser->setEnabled(true);
+}
+
+void MainWindow::afficherGraphiquePresence(int presents, int absents)
+{
+    if (!ui->widget_pie->layout()) {
+        ui->widget_pie->setLayout(new QVBoxLayout());
+    }
+
+    QPieSeries *series = new QPieSeries();
+    series->append("Présents", presents);
+    series->append("Absents", absents);
+    series->setLabelsVisible(true);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Répartition des présences");
+    chart->setAnimationOptions(QChart::AllAnimations);
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    // nettoyage propre
+    QLayout *layout = ui->widget_pie->layout();
+    QLayoutItem *item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (item->widget()) item->widget()->deleteLater();
+        delete item;
+    }
+
+    layout->addWidget(chartView);
+}
+
+void MainWindow::afficherCourbePresence()
+{
+    if (!ui->widget_courbe->layout()) {
+        ui->widget_courbe->setLayout(new QVBoxLayout());
+    }
+
+    QLineSeries *series = new QLineSeries();
+
+    QSqlQuery query;
+    query.exec("SELECT s.date_seance as date, COUNT(*) as total "
+               "FROM presences p "
+               "JOIN seances s ON p.id_seance = s.id "
+               "WHERE p.statut='present' "
+               "GROUP BY s.date_seance "
+               "ORDER BY s.date_seance");
+
+    int index = 0;
+
+    while (query.next()) {
+        int total = query.value("total").toInt();
+        series->append(index, total);
+        index++;
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Évolution des présences");
+    chart->createDefaultAxes();
+    chart->setAnimationOptions(QChart::AllAnimations);
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    // nettoyage propre
+    QLayout *layout = ui->widget_courbe->layout();
+    QLayoutItem *item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (item->widget()) item->widget()->deleteLater();
+        delete item;
+    }
+
+    layout->addWidget(chartView);
 }

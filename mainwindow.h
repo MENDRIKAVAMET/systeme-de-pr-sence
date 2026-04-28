@@ -42,6 +42,7 @@ private slots:
     void on_comboBox_seances_currentIndexChanged(int index);
     void on_comboBox_etudiants_currentIndexChanged(int index);
     void on_comboBox_matieres_currentIndexChanged(int index);
+    void on_btn_actualiser_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -54,6 +55,8 @@ private:
     void chargerRapportParSeance();
     void chargerRapportParEtudiant();
     void chargerRapportParMatiere();
+    void afficherGraphiquePresence(int presents, int absents);
+    void afficherCourbePresence();
 
 };
 

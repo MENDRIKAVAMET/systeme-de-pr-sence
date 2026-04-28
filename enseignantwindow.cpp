@@ -6,6 +6,9 @@
 #include "loginwindow.h"
 #include <QDate>
 #include <QTime>
+#include <QProcess>
+#include <QTcpSocket>
+#include <QNetworkInterface>
 
 EnseignantWindow::EnseignantWindow(int idEnseignant, QString nomEnseignant, QWidget *parent)
     : QMainWindow(parent)
@@ -19,11 +22,70 @@ EnseignantWindow::EnseignantWindow(int idEnseignant, QString nomEnseignant, QWid
     ui->label_nom_enseignant->setText("Bonjour, " + m_nomEnseignant + " !");
     ui->stackedWidget->setCurrentWidget(ui->page_seances_jour);
     chargerSeancesJour();
+
+    nodeProcess = new QProcess(this);
+
+    if(isServerRunning()){
+        qDebug()<< "Serveur deja lance";
+    } else {
+        qDebug() << "Demarrage du serveur Node...";
+
+        if(!nodeProcess){
+            nodeProcess = new QProcess(this);
+        }
+
+        connect(nodeProcess, &QProcess::readyReadStandardError, [this]() {
+            qDebug() << "NODE ERROR:" << nodeProcess->readAllStandardError();
+        });
+
+        connect(nodeProcess, &QProcess::readyReadStandardOutput, [this]() {
+            qDebug() << "NODE OUT:" << nodeProcess->readAllStandardOutput();
+        });
+        connect(nodeProcess, &QProcess::started, this, [=]() {
+            nodeRunning = true;
+            qDebug() << "Node STARTED";
+        });
+
+        connect(nodeProcess,
+                QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                this,
+                [=]() {
+                    nodeRunning = false;
+                    qDebug() << "Node STOPPED";
+                });
+        nodeProcess->start("/home/mendrika/.nvm/versions/node/v20.20.0/bin/node", QStringList() << "server.js");
+
+        if(!nodeProcess->waitForStarted()){
+            qDebug() << "ERROR START:" << nodeProcess->errorString();
+        }
+    }
+}
+
+QString EnseignantWindow::getLocalIP()
+{
+    foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol &&
+            address != QHostAddress::LocalHost) {
+            return address.toString();
+        }
+    }
+    return "127.0.0.1";
+}
+
+bool EnseignantWindow::isServerRunning(){
+    QTcpSocket socket;
+    socket.connectToHost("127.0.0.1", 8080);
+
+    return socket.waitForConnected(500);
 }
 
 EnseignantWindow::~EnseignantWindow()
 {
     arreterServeur();
+    if(nodeProcess){
+        nodeProcess->kill();
+        nodeProcess->waitForFinished();
+    }
     delete ui;
 }
 
@@ -84,7 +146,9 @@ void EnseignantWindow::demarrerServeur()
 void EnseignantWindow::arreterServeur()
 {
     if (m_serveur) {
-        m_serveur->close();
+        if(m_serveur->isListening()){
+            m_serveur->close();
+        }
         delete m_serveur;
         m_serveur = nullptr;
     }
@@ -218,6 +282,10 @@ void EnseignantWindow::on_btn_demarrer_presence_clicked()
     ui->label_statut->setText("En attente de scan...");
     ui->label_statut->setStyleSheet("color: #2D2D2D; border: 2px solid #E0E0E0; border-radius: 5px; padding: 10px;");
     ui->label_nom_etudiant->setText("");
+
+    QString ip = getLocalIP();
+    QString url = "https://" + ip + ":8080";
+    ui->label_url->setText(url);
 
     // Démarrer le serveur TCP
     demarrerServeur();

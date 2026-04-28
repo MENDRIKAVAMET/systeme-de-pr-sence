@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Présence</title>
+
+    <!-- Bootstrap CSS local -->
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons local -->
+    <link href="css/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <!-- Notre CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- html5-qrcode local -->
+    <script src="js/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <span class="navbar-brand">
+                <i class="bi bi-qr-code-scan me-2"></i>
+                Système de Présence
+            </span>
+            <span id="badge_connexion" class="badge bg-danger connexion-badge">
+                <i class="bi bi-wifi-off me-1"></i>Déconnecté
+            </span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <!-- Card Connexion -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-wifi me-2"></i>Connexion au serveur
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-8">
+                        <label class="form-label fw-bold">Adresse IP du PC</label>
+                        <input type="text" id="input_ip" class="form-control"
+                               placeholder="ex: 192.168.1.10">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-bold">Port</label>
+                        <input type="text" id="input_port" class="form-control"
+                               placeholder="8080" value="8080">
+                    </div>
+                    <div class="col-12">
+                        <button onclick="connecterServeur()" class="btn btn-connecter">
+                            Se connecter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Scanner -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Scanner QR Code
+            </div>
+            <div class="card-body">
+                <div id="reader" class="mb-3" style="width:100%; min-height: 300px;"></div>
+                <button id="btn_scanner" onclick="demarrerScan()" class="btn btn-scanner mb-2">
+                    Démarrer le scan
+                </button>
+                <button id="btn_arreter" onclick="arreterScan()" class="btn btn-arreter" style="display:none;">
+                    Arrêter le scan
+                </button>
+            </div>
+        </div>
+
+        <!-- Card Résultat -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Résultat
+            </div>
+            <div class="card-body">
+                <div id="resultat_container" class="resultat-container">
+                    <div class="resultat-icone">📷</div>
+                    <div class="resultat-titre" style="color:#666;">En attente de scan...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS local -->
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Notre JS -->
+    <script src="js/app.js"></script>
+
+</body>
+</html>

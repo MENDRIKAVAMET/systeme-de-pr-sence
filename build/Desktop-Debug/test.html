@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Système de Présence</title>
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <span class="navbar-brand">🧪 Page de Test</span>
+            <span id="badge_connexion" class="badge bg-danger connexion-badge">Déconnecté</span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <!-- Connexion -->
+        <div class="card mb-4">
+            <div class="card-header">Connexion au serveur</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-8">
+                        <input type="text" id="input_ip" class="form-control"
+                               placeholder="IP" value="localhost">
+                    </div>
+                    <div class="col-4">
+                        <input type="text" id="input_port" class="form-control"
+                               value="8080">
+                    </div>
+                    <div class="col-12">
+                        <button onclick="connecterServeur()" class="btn btn-connecter">
+                            Se connecter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulation scan -->
+        <div class="card mb-4">
+            <div class="card-header">Simuler un scan QR</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Numéro matricule</label>
+                        <input type="text" id="input_matricule" class="form-control"
+                               placeholder="ex: 044I24" value="044I24">
+                    </div>
+                    <div class="col-12">
+                        <button onclick="simulerScan()" class="btn btn-scanner">
+                            📷 Simuler le scan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Boutons de test rapide -->
+                <hr>
+                <p class="fw-bold">Tests rapides :</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <button onclick="simulerScanRapide('044I24')"
+                            class="btn btn-outline-primary btn-sm">
+                        044I24
+                    </button>
+                    <button onclick="simulerScanRapide('272I24')"
+                            class="btn btn-outline-primary btn-sm">
+                        272I24
+                    </button>
+                    <button onclick="simulerScanRapide('086I24')"
+                            class="btn btn-outline-primary btn-sm">
+                        086I24
+                    </button>
+                    <button onclick="simulerScanRapide('INVALIDE')"
+                            class="btn btn-outline-danger btn-sm">
+                        ❌ Invalide
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Résultat -->
+        <div class="card mb-4">
+            <div class="card-header">Résultat</div>
+            <div class="card-body">
+                <div id="resultat_container" class="resultat-container">
+                    <div class="resultat-icone">📷</div>
+                    <div class="resultat-titre" style="color:#666;">
+                        En attente de scan...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Logs
+                <button onclick="clearLogs()"
+                        class="btn btn-sm btn-outline-light float-end">
+                    Effacer
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="logs" style="
+                    background:#1e1e1e;
+                    color:#00ff00;
+                    font-family: monospace;
+                    font-size: 13px;
+                    padding: 15px;
+                    border-radius: 8px;
+                    height: 200px;
+                    overflow-y: auto;
+                "></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        let ws = null;
+
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const time = new Date().toLocaleTimeString();
+            logs.innerHTML += `<div>[${time}] ${message}</div>`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+
+        function connecterServeur() {
+            const ip = document.getElementById('input_ip').value.trim();
+            const port = document.getElementById('input_port').value.trim();
+            const url = `wss://${ip}:${port}`;
+
+            ws = new WebSocket(url);
+
+            ws.onopen = () => {
+                log('✅ Connecté au serveur !');
+                document.getElementById('badge_connexion').className = 'badge bg-success connexion-badge';
+                document.getElementById('badge_connexion').innerHTML = 'Connecté';
+            };
+
+            ws.onmessage = (event) => {
+                const reponse = event.data.trim();
+                log('📨 Réponse : ' + reponse);
+                afficherReponse(reponse);
+            };
+
+            ws.onclose = () => {
+                log('❌ Déconnecté du serveur');
+                document.getElementById('badge_connexion').className = 'badge bg-danger connexion-badge';
+                document.getElementById('badge_connexion').innerHTML = 'Déconnecté';
+            };
+
+            ws.onerror = () => {
+                log('⚠️ Erreur WebSocket !');
+            };
+        }
+
+        function simulerScan() {
+            const matricule = document.getElementById('input_matricule').value.trim();
+            if (!matricule) {
+                alert('Veuillez entrer un matricule !');
+                return;
+            }
+            simulerScanRapide(matricule);
+        }
+
+        function simulerScanRapide(matricule) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                alert('Veuillez vous connecter d\'abord !');
+                return;
+            }
+            log('📷 Scan simulé : ' + matricule);
+            ws.send(matricule);
+        }
+
+        function afficherReponse(reponse) {
+            const container = document.getElementById('resultat_container');
+            const parties = reponse.split(':');
+            const code = parties[0].trim();
+            const nom = parties[1] ? parties[1].trim() : '';
+
+            container.style.display = 'block';
+
+            if (code === 'PRESENT') {
+                container.className = 'resultat-container resultat-present';
+                container.innerHTML = `
+                    <div class="resultat-icone">✅</div>
+                    <div class="resultat-titre" style="color:#28A745;">Présent !</div>
+                    <div class="resultat-nom">${nom}</div>
+                `;
+            } else if (code === 'DEJA_PRESENT') {
+                container.className = 'resultat-container resultat-deja';
+                container.innerHTML = `
+                    <div class="resultat-icone">⚠️</div>
+                    <div class="resultat-titre" style="color:#F0A500;">Déjà présent !</div>
+                    <div class="resultat-nom">${nom}</div>
+                `;
+            } else if (code === 'INCONNU') {
+                container.className = 'resultat-container resultat-absent';
+                container.innerHTML = `
+                    <div class="resultat-icone">❌</div>
+                    <div class="resultat-titre" style="color:#DC3545;">Non reconnu !</div>
+                `;
+            } else if (code === 'ERREUR_CONNEXION' || code === 'TIMEOUT') {
+                container.className = 'resultat-container resultat-absent';
+                container.innerHTML = `
+                    <div class="resultat-icone">🔌</div>
+                    <div class="resultat-titre" style="color:#DC3545;">Erreur connexion !</div>
+                `;
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QProcess>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,8 +38,11 @@ private:
     int m_idEnseignant;
     QString m_nomEnseignant;
     int m_idSeanceEnCours;
-
+    QProcess *nodeProcess = nullptr;
+    bool isServerRunning();
     QTcpServer *m_serveur;
+    QString getLocalIP();
+    bool nodeRunning = false;
 
     void chargerSeancesJour();
     void demarrerServeur();

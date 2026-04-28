@@ -1,0 +1,190 @@
+:root {
+    --bleu: #0096C7;
+    --bleu-fonce: #0077A8;
+    --blanc: #FFFFFF;
+    --gris-clair: #F5F9FF;
+    --rouge: #DC3545;
+    --vert: #28A745;
+    --orange: #F0A500;
+}
+
+/* ===== GENERAL ===== */
+body {
+    background-color: var(--gris-clair);
+    font-family: Arial, sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background-color: var(--bleu) !important;
+}
+
+.navbar-brand {
+    color: var(--blanc) !important;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.connexion-badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+/* ===== CARDS ===== */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 150, 199, 0.15);
+}
+
+.card-header {
+    background-color: var(--bleu);
+    color: var(--blanc);
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: bold;
+}
+
+/* ===== BOUTONS ===== */
+.btn-scanner {
+    background-color: var(--bleu);
+    color: var(--blanc);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 100%;
+}
+
+.btn-scanner:hover {
+    background-color: var(--bleu-fonce);
+    color: var(--blanc);
+}
+
+.btn-arreter {
+    background-color: var(--rouge);
+    color: var(--blanc);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 100%;
+}
+
+.btn-arreter:hover {
+    background-color: #B02030;
+    color: var(--blanc);
+}
+
+.btn-connecter {
+    background-color: var(--bleu);
+    color: var(--blanc);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
+}
+
+.btn-connecter:hover {
+    background-color: var(--bleu-fonce);
+    color: var(--blanc);
+}
+
+/* ===== SCANNER ===== */
+#reader {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100% !important;
+}
+
+/* ===== STATUT ===== */
+.statut-card {
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: none;
+}
+
+.statut-present {
+    background-color: #D4EDDA;
+    color: var(--vert);
+    border: 2px solid var(--vert);
+}
+
+.statut-absent {
+    background-color: #F8D7DA;
+    color: var(--rouge);
+    border: 2px solid var(--rouge);
+}
+
+.statut-attente {
+    background-color: #FFF3CD;
+    color: var(--orange);
+    border: 2px solid var(--orange);
+}
+
+.statut-erreur {
+    background-color: #F8D7DA;
+    color: var(--rouge);
+    border: 2px solid var(--rouge);
+}
+
+/* ===== NOM ETUDIANT ===== */
+.nom-etudiant {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2D2D2D;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* ===== RESULTAT SCAN ===== */
+.resultat-container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    display: none;
+}
+
+.resultat-present {
+    background-color: #D4EDDA;
+    border: 3px solid #28A745;
+}
+
+.resultat-absent {
+    background-color: #F8D7DA;
+    border: 3px solid #DC3545;
+}
+
+.resultat-deja {
+    background-color: #FFF3CD;
+    border: 3px solid #F0A500;
+}
+
+.resultat-icone {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.resultat-titre {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.resultat-nom {
+    font-size: 1.2rem;
+    color: #2D2D2D;
+}
+
+.resultat-matricule {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
